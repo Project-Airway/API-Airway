@@ -29,7 +29,7 @@ const ticket_schema = mongoose.Schema({
 
     
     number_of_seats : {
-        type : true,
+        type : Number,
         required : true
     }
     
