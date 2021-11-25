@@ -1,23 +1,23 @@
 const mongoose = require('mongoose');
 
-const transaction_schema = mongoose.Schema({
+const transactionSchema = mongoose.Schema({
 
-    trnx_amt : {
+    trxn_amt : {
         type : Number,
         required : true
     },
 
-    trnx_date : {
+    trxn_date : {
         type : Date,
         default : Date.now
     },
 
-    trnx_status : {
+    trxn_status : {
         type : Boolean,
         required : true
     },
 
-    trnx_ticket_pnr : {
+    trxn_ticket_pnr : {
         type : Number,
         required : true
     },
@@ -29,4 +29,4 @@ const transaction_schema = mongoose.Schema({
 
 });
 
-mongoose.exports = mongoose.model('Transaction', transaction_schema);
+mongoose.exports = mongoose.model('Transaction', transactionSchema);

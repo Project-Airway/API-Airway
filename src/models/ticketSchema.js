@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const ticket_schema = mongoose.Schema({
+const ticketSchema = mongoose.Schema({
 
     pnr : {
         type : Number,
@@ -35,4 +35,4 @@ const ticket_schema = mongoose.Schema({
     
 });
 
-mongoose.exports = mongoose.model('Tickets', ticket_schema);
+mongoose.exports = mongoose.model('Tickets', ticketSchema);
