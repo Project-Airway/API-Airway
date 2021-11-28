@@ -17,12 +17,13 @@ const transactionSchema = mongoose.Schema({
 
     trxn_status : {
         type : Boolean,
-        default : true
+        //default : true,
+        required : true
     },
 
-    trxn_ticket_pnr : {
+    pnr : {
         type : Number,
-        //ref : ticket
+        ref : ticket,
         required : true
     },
 

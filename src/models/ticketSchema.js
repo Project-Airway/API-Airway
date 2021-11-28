@@ -4,12 +4,14 @@ const ticketSchema = mongoose.Schema({
 
     pnr : {
         type : Number,
-        required : true
+        required : true,
+        unique : true
     },
 
     flight_id : {
         type : String,
-        required : true
+        required : true,
+        unique : true
     },
 
     source : {

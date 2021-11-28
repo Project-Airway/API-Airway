@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/userSchema');
 const bcrypt = require('bcrypt');
-const e = require('express');
 
 // Create a new user. or in other word onboard a new user.
 
@@ -43,11 +42,15 @@ router.post('/login', async (req, res) => {
 
         else{
             res.status(400).json({message: "InValid Password"});
+
+            // Redirect to the same page.
+            //router.route('/login');
         }
     }
 
     else{
         res.status(401).json({message: "User does not exist. Please sign up or check your details."})
+        // Redirects to same page.
     }
 });
 
