@@ -1,4 +1,7 @@
+//const { ObjectId } = require('bson');
 const mongoose = require('mongoose');
+const user = require('./userSchema');
+const ticket = require('./ticketSchema')
 
 const transactionSchema = mongoose.Schema({
 
@@ -14,19 +17,25 @@ const transactionSchema = mongoose.Schema({
 
     trxn_status : {
         type : Boolean,
-        required : true
+        default : true
     },
 
     trxn_ticket_pnr : {
         type : Number,
+        //ref : ticket
         required : true
     },
 
     number_of_seats : {
         type : Number,
         required : true
-    }
+    },
 
+    _id : {
+        type : String,
+        required : true,
+        ref : user
+    }
 });
 
-mongoose.exports = mongoose.model('Transaction', transactionSchema);
+module.exports = mongoose.model('Transaction', transactionSchema);

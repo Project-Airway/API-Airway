@@ -16,6 +16,11 @@ const userSchema=mongoose.Schema({
         required : true
     },
 
+    password : {
+        type : String,
+        required : true
+    },
+
     reward_points : {
         type : Number,
         default : 0
