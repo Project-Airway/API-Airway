@@ -7,7 +7,7 @@ const Transactions = require('../models/transactionSchema');
 
 router.get('/:userId', async (req, res) => {
     try{
-        const transactions = await Transactions.findById(req.params.userId);
+        const transactions = await Transactions.find({"User_id": req.params.userId});
         res.json(transactions);
     }catch(err){
         res.json({message : err});
@@ -20,11 +20,10 @@ router.get('/:userId', async (req, res) => {
 router.post('/:userId', async (req, res) => {
     const transaction = new Transactions({
         trxn_amt: req.body.trxn_amt,
-        trxn_date: req.body.trxn_date,
         trxn_status: req.body.trxn_status,
-        trxn_ticket_pnr : req.body.trxn_ticket_pnr,
+        pnr : req.body.pnr,
         number_of_seats: req.body.number_of_seats,
-        _id: req.params.userId
+        User_id: req.params.userId
     });
     try{
         const newTrxn = await transaction.save()

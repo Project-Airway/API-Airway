@@ -23,8 +23,8 @@ const transactionSchema = mongoose.Schema({
 
     pnr : {
         type : Number,
-        ref : ticket,
-        required : true
+        required: true,
+        ref: ticket
     },
 
     number_of_seats : {
@@ -32,7 +32,7 @@ const transactionSchema = mongoose.Schema({
         required : true
     },
 
-    _id : {
+    User_id : {
         type : String,
         required : true,
         ref : user

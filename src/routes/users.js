@@ -33,14 +33,14 @@ router.post('/login', async (req, res) => {
     if(existingUser){
 
         // Check Password with hashed password stored in DB.
-        const validPassword = await bcrypt.compare(body.password, existingUser.password)
+        const validPassword = await bcrypt.compare(body.password, existingUser.password)        // Checking for the authenticity of the password
 
-        if(validPassword){
+        if(validPassword){                                                                      // If password is valid
             // to be redirected to home screen i.e., flights search.
             res.status(200).json({message: "Valid Password"});
         }
 
-        else{
+        else{                                                                                  // If password is not valid
             res.status(400).json({message: "InValid Password"});
 
             // Redirect to the same page.
