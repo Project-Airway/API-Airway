@@ -3,6 +3,12 @@ const router = express.Router();
 const User = require('../models/userSchema');
 const bcrypt = require('bcrypt');
 
+async function hashPassword(passwordInput){
+    const salt = await bcrypt.genSalt(10);
+    const password = await bcrypt.hash(passwordInput, salt)
+    return password
+}
+
 // Create a new user. or in other word onboard a new user.
 
 router.post('/signup', async (req, res) => {
@@ -12,8 +18,7 @@ router.post('/signup', async (req, res) => {
         email: req.body.email,
         password: req.body.password
     });
-    const salt = await bcrypt.genSalt(10);
-    userOnBoard.password = await bcrypt.hash(userOnBoard.password, salt);
+    userOnBoard.password = await hashPassword(userOnBoard.password)
     try{
         const newUser = await userOnBoard.save()
         res.json(newUser);
@@ -37,11 +42,16 @@ router.post('/login', async (req, res) => {
 
         if(validPassword){                                                                      // If password is valid
             // to be redirected to home screen i.e., flights search.
-            res.status(200).json({message: "Valid Password"});
+            res.status(200).json({
+                userId: existingUser._id,
+                name : existingUser.name,
+                phone: existingUser.mobile_no,
+                reward_points: existingUser.reward_points
+            });
         }
 
         else{                                                                                  // If password is not valid
-            res.status(400).json({message: "InValid Password"});
+            res.status(400).json({message: "Invalid Username or Password"});
 
             // Redirect to the same page.
             //router.route('/login');
@@ -61,7 +71,13 @@ router.get('/:userId', async (req, res) => {
 
     try{
         const userDetails = await User.findById(req.params.userId);
-        res.json(userDetails);
+        res.json({
+            userId: userDetails._id,
+            name : userDetails.name,
+            phone: userDetails.mobile_no,
+            reward_points: userDetails.reward_points,
+        }
+            );
     }catch(err){
         res.json({message: err});
     }
@@ -70,11 +86,16 @@ router.get('/:userId', async (req, res) => {
 
 
 //Update a current user details.
+// You can update Name, Phone NO, Reward Points of the user
 
 router.patch('/:userId', async (req, res) => {
-
     try{
-        const updateUser = await User.updateOne({_id: req.params.userId}, {$set: {reward_points : req.body.reward_points}});
+        const updateUser = await User.updateOne({_id: req.params.userId}, {$set: {
+            reward_points : req.body.reward_points,
+            name : req.body.name,
+            mobile_no : req.body.mobile_no,
+            password : await hashPassword(req.body.password)
+        }});
         res.json(updateUser);
     }catch(err){
         res.json({message: err});
