@@ -4,12 +4,14 @@ const ticketSchema = mongoose.Schema({
 
     pnr : {
         type : Number,
-        required : true
+        required : true,
+        unique : true
     },
 
     flight_id : {
         type : String,
-        required : true
+        required : true,
+        unique : true
     },
 
     source : {
@@ -35,4 +37,4 @@ const ticketSchema = mongoose.Schema({
     
 });
 
-mongoose.exports = mongoose.model('Tickets', ticketSchema);
+module.exports = mongoose.model('Tickets', ticketSchema);
