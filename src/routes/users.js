@@ -9,7 +9,7 @@ async function hashPassword(passwordInput){
     return password
 }
 
-// Create a new user. or in other word onboard a new user.
+// Create a new user, or in other words onboard a new user.
 
 router.post('/signup', async (req, res) => {
     const userOnBoard = new User({
@@ -21,7 +21,12 @@ router.post('/signup', async (req, res) => {
     userOnBoard.password = await hashPassword(userOnBoard.password)
     try{
         const newUser = await userOnBoard.save()
-        res.json(newUser);
+        res.json({
+            userId: newUser._id,
+            name : newUser.name,
+            phone: newUser.mobile_no,
+            reward_points: newUser.reward_points
+        });
     }catch(err){
         res.json({message: err});
     }
@@ -64,7 +69,6 @@ router.post('/login', async (req, res) => {
     }
 });
 
-
 // Get back a current user details.
 
 router.get('/:userId', async (req, res) => {
@@ -76,14 +80,12 @@ router.get('/:userId', async (req, res) => {
             name : userDetails.name,
             phone: userDetails.mobile_no,
             reward_points: userDetails.reward_points,
-        }
-            );
+        });
     }catch(err){
         res.json({message: err});
     }
 
 });
-
 
 //Update a current user details.
 // You can update Name, Phone NO, Reward Points of the user
@@ -96,11 +98,12 @@ router.patch('/:userId', async (req, res) => {
             mobile_no : req.body.mobile_no,
             password : await hashPassword(req.body.password)
         }});
-        res.json(updateUser);
+        if(updateUser.acknowledged == true && updateUser.modifiedCount == 1){
+            res.status(200).json({message: "Details successfully Changed"});
+        }
     }catch(err){
         res.json({message: err});
     }
-
 });
 
 
