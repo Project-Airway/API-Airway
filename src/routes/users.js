@@ -72,9 +72,9 @@ router.post('/login', async (req, res) => {
 // Get back a current user details.
 
 router.get('/:userId', async (req, res) => {
-
     try{
         const userDetails = await User.findById(req.params.userId);
+        
         res.json({
             userId: userDetails._id,
             name : userDetails.name,
@@ -95,16 +95,26 @@ router.patch('/:userId', async (req, res) => {
         const updateUser = await User.updateOne({_id: req.params.userId}, {$set: {
             reward_points : req.body.reward_points,
             name : req.body.name,
-            mobile_no : req.body.mobile_no,
-            password : await hashPassword(req.body.password)
+            mobile_no : req.body.mobile_no
         }});
         if(updateUser.acknowledged == true && updateUser.modifiedCount == 1){
             res.status(200).json({message: "Details successfully Changed"});
         }
     }catch(err){
-        res.json({message: err});
+        res.status(400).json({message: err});
     }
 });
+
+router.patch('/:userId/PassUp', async (req, res) => {
+    try {
+        const updatePasswordUser = await User.updateOne({_id: req.params.userId}, {$set: {password : await hashPassword(req.body.password)}});
+        if(updatePasswordUser.acknowledged == true && updatePasswordUser.modifiedCount == 1){
+            res.status(200).json({message: "Password successfully Changed"});
+        }
+    } catch (err) {
+        res.status(400).json({message: err});
+    }
+})
 
 
 module.exports = router;

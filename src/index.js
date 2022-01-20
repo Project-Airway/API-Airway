@@ -9,6 +9,9 @@ const connectDB = require('./config/db');
 const bodyParser = require('body-parser');
 const transcactionHistoryRouter = require('./routes/transactionHistory');
 const flightsFetchingRouter = require('./routes/flightsFetching');
+const bookingRouter = require('./routes/booking');
+
+const testRouter = require('./routes/testRoute');
 
 const PORT = process.env.PORT || 3001;
 
@@ -22,6 +25,8 @@ app.use('/', indexRouter);
 app.use('/users', userRouter);
 app.use('/transactionHistory', transcactionHistoryRouter);
 app.use('/flights', flightsFetchingRouter);
+app.use('/test', testRouter);
+app.use('/booking', bookingRouter);
 
 
 app.listen(PORT, () => {
