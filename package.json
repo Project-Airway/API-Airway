@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/Project-Airway/API-Airway#readme",
   "dependencies": {
+    "@duffel/api": "^1.7.3",
+    "axios": "^0.24.0",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",

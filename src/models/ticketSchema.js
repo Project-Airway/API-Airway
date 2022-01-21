@@ -1,17 +1,17 @@
+const { ObjectId } = require('mongodb');
 const mongoose = require('mongoose');
+const User = require('../models/userSchema');
 
 const ticketSchema = mongoose.Schema({
-
-    pnr : {
-        type : Number,
-        required : true,
-        unique : true
+    userId : {
+        type: ObjectId,
+        required: true,
+        ref : User
     },
 
-    flight_id : {
+    flightId : {
         type : String,
-        required : true,
-        unique : true
+        required : true
     },
 
     source : {
@@ -19,22 +19,65 @@ const ticketSchema = mongoose.Schema({
         required : true
     },
 
-    dest_ : {
+    destination : {
         type : String,
         required : true
     },
 
-    date_of_travel : {
+    dateOfTravel : {
         type : Date,
         required : true
     },
-
     
-    number_of_seats : {
+    numberOfSeats : {
+        type : Number,
+        required : true
+    },
+
+    departuteTime : {
+        type :String,
+        required: true
+    },
+
+    arrivalTime : {
+        type : String,
+        required : true
+    },
+
+    duration : {
+        type : String,
+        required : true
+    },
+
+    airlineCode : {
+        type : String,
+        required : true
+    },
+
+    airlineName : {
+        type : String,
+        required : true
+    },
+
+    totalPrice : {
+        type : Number,
+        required : true
+    },
+
+    trxn_date : {
+        type : Date,
+        default : Date.now
+    },
+        
+    cancelled : {
+        type : Boolean,
+        default : false
+    },
+
+    rewardPointsAdded : {
         type : Number,
         required : true
     }
-    
 });
 
 module.exports = mongoose.model('Tickets', ticketSchema);

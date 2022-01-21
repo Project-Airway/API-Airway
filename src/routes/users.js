@@ -9,7 +9,7 @@ async function hashPassword(passwordInput){
     return password
 }
 
-// Create a new user. or in other word onboard a new user.
+// Create a new user, or in other words onboard a new user.
 
 router.post('/signup', async (req, res) => {
     const userOnBoard = new User({
@@ -21,7 +21,13 @@ router.post('/signup', async (req, res) => {
     userOnBoard.password = await hashPassword(userOnBoard.password)
     try{
         const newUser = await userOnBoard.save()
-        res.json(newUser);
+        res.json({
+            userId: newUser._id,
+            name : newUser.name,
+            phone: newUser.mobile_no,
+            reward_points: newUser.reward_points,
+            email: newUser.email
+        });
     }catch(err){
         res.json({message: err});
     }
@@ -46,7 +52,8 @@ router.post('/login', async (req, res) => {
                 userId: existingUser._id,
                 name : existingUser.name,
                 phone: existingUser.mobile_no,
-                reward_points: existingUser.reward_points
+                reward_points: existingUser.reward_points,
+                email : existingUser.email
             });
         }
 
@@ -64,26 +71,23 @@ router.post('/login', async (req, res) => {
     }
 });
 
-
 // Get back a current user details.
 
 router.get('/:userId', async (req, res) => {
-
     try{
         const userDetails = await User.findById(req.params.userId);
+        
         res.json({
             userId: userDetails._id,
             name : userDetails.name,
             phone: userDetails.mobile_no,
             reward_points: userDetails.reward_points,
-        }
-            );
+        });
     }catch(err){
         res.json({message: err});
     }
 
 });
-
 
 //Update a current user details.
 // You can update Name, Phone NO, Reward Points of the user
@@ -93,15 +97,26 @@ router.patch('/:userId', async (req, res) => {
         const updateUser = await User.updateOne({_id: req.params.userId}, {$set: {
             reward_points : req.body.reward_points,
             name : req.body.name,
-            mobile_no : req.body.mobile_no,
-            password : await hashPassword(req.body.password)
+            mobile_no : req.body.mobile_no
         }});
-        res.json(updateUser);
+        if(updateUser.acknowledged == true && updateUser.modifiedCount == 1){
+            res.status(200).json({message: "Details successfully Changed"});
+        }
     }catch(err){
-        res.json({message: err});
+        res.status(400).json({message: err});
     }
-
 });
+
+router.patch('/:userId/PassUp', async (req, res) => {
+    try {
+        const updatePasswordUser = await User.updateOne({_id: req.params.userId}, {$set: {password : await hashPassword(req.body.password)}});
+        if(updatePasswordUser.acknowledged == true && updatePasswordUser.modifiedCount == 1){
+            res.status(200).json({message: "Password successfully Changed"});
+        }
+    } catch (err) {
+        res.status(400).json({message: err});
+    }
+})
 
 
 module.exports = router;
