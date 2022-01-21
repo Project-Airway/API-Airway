@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Ticket = require('../models/ticketSchema');
 const axios = require('axios').default;
+const User = require('../models/userSchema');
 
 async function getRewardPoints(ticketPrice){
     if(ticketPrice<200){
@@ -72,16 +73,48 @@ router.get('/:userId/getTickets', async (req, res) => {
 
 // Cancel a ticket
 
-// router.get('/:userId/cancelTicket/:ticketId', async (req, res) => {
-//     try {
-//         const getUser = await User.findOne({_id: req.params.userId});
-//         const getTickets = await Ticket.findOne({userId : req.params.userId, _id : req.params.ticketId});
-//         if(getTickets.departuteTime  < ){
+router.patch('/:userId/cancelTicket/:ticketId', async (req, res) => {
+    try {
+        const getUser = await User.findById(req.params.userId);
+        const getTicket = await Ticket.findById(req.params.ticketId);
 
-//         }
-//     } catch (err) {
-        
-//     }
-// });
+        // Time logic for cancelling a ticket
+
+        var presentTime =  new Date();
+        presentTime = presentTime.getTime();
+        depTime = getTicket.dateOfTravel.getTime();
+        remainingTime = presentTime - depTime;
+
+        // Cannot cancel the ticket
+
+        if(remainingTime < 100000){
+            res.status(403).json({message : "This ticket cannot be cancelled anymore!!!\n Sorry for the inconvinience caused."});
+            return;
+        }
+
+        if(getTicket.cancelled == true){
+            console.log("Entered If");
+            res.status(200).json({message : "This ticket is already cancelled!!!"});
+            return;
+        }
+
+        // Ticket will get cancelled
+    
+        getTicket.cancelled = true;
+        var tempPoints = getTicket.rewardPointsAdded;
+        console.log(tempPoints);
+        tempPoints = getUser.reward_points - tempPoints;
+       
+        await Ticket.findByIdAndUpdate(req.params.ticketId, {cancelled : true, rewardPointsAdded: 0});
+
+        const resp = await User.findByIdAndUpdate(req.params.userId, {reward_points : tempPoints});
+        const newPoints = resp.reward_points;
+        console.log(newPoints);
+
+        res.status(200).json({message : "Ticket Successfully Canclled!!! \n Your updated reward points is : " + newPoints});
+    } catch (err) {
+        res.json({message : err});
+    }
+});
 
 module.exports = router;
