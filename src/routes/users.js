@@ -25,7 +25,8 @@ router.post('/signup', async (req, res) => {
             userId: newUser._id,
             name : newUser.name,
             phone: newUser.mobile_no,
-            reward_points: newUser.reward_points
+            reward_points: newUser.reward_points,
+            email: newUser.email
         });
     }catch(err){
         res.json({message: err});
@@ -51,7 +52,8 @@ router.post('/login', async (req, res) => {
                 userId: existingUser._id,
                 name : existingUser.name,
                 phone: existingUser.mobile_no,
-                reward_points: existingUser.reward_points
+                reward_points: existingUser.reward_points,
+                email : existingUser.email
             });
         }
 
