@@ -56,10 +56,10 @@ router.post('/:userId/fetchFlights', async (req, res) => {
     //res.json(getFlights);
 
     var options = {
-      method: 'GET',
-      url: `https://api.flightapi.io/onewaytrip/61e6c0153af59b74e513e55a/${src}/${dest}/${date1}/${adults}/${children}/${infants}/${cabin}/USD`,
-      // method: "GET",
-      // url : `http://localhost:3001/test/test`,
+      //method: 'GET',
+      //url: `https://api.flightapi.io/onewaytrip/61e6c0153af59b74e513e55a/${src}/${dest}/${date1}/${adults}/${children}/${infants}/${cabin}/USD`,
+      method: "GET",
+       url : `http://localhost:3001/test/test`,
       
     };
     
