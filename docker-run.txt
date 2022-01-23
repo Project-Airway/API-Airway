@@ -1,0 +1,7 @@
+docker images -a
+docker system prune -a
+docker-compose build
+docker-compose up
+docker tag api-airway_web arjun7777/api-airway_web
+ocker login -u arjun7777
+docker push arjun7777/api-airway_web
