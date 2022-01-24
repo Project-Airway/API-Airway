@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require('../models/userSchema');
 const bcrypt = require('bcrypt');
 
-async function hashPassword(passwordInput){
+export async function hashPassword(passwordInput){
     const salt = await bcrypt.genSalt(10);
     const password = await bcrypt.hash(passwordInput, salt)
     return password
@@ -48,7 +48,7 @@ router.post('/login', async (req, res) => {
 
         if(validPassword){                                                                      // If password is valid
             // to be redirected to home screen i.e., flights search.
-            res.status(200).json({
+            res.sendStatus(200).json({
                 userId: existingUser._id,
                 name : existingUser.name,
                 phone: existingUser.mobile_no,
