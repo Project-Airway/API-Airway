@@ -10,6 +10,7 @@ const bodyParser = require('body-parser');
 const transcactionHistoryRouter = require('./routes/transactionHistory');
 const flightsFetchingRouter = require('./routes/flightsFetching');
 const bookingRouter = require('./routes/booking');
+const cors  = require('cors');
 
 const testRouter = require('./routes/testRoute');
 
@@ -18,6 +19,7 @@ const PORT = process.env.PORT || 3001;
 const app = express();
 
 app.use(bodyParser.json());
+app.use(cors({ origin: 'http://localhost:3000' }));
 
 connectDB();
 
