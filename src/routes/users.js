@@ -84,7 +84,7 @@ router.get('/:userId', async (req, res) => {
             reward_points: userDetails.reward_points,
         });
     }catch(err){
-        res.json({message: err});
+        res.send(JSON.parse({message: err}));
     }
 
 });
